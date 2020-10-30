@@ -5,6 +5,9 @@ branding:
   icon: 'cloud'
   color: 'purple'
 inputs:
+  GITHUB_TOKEN:
+    description: 'Token to use for HTTPS auth to private repos'
+    required: true
   tf_actions_subcommand:
     description: 'Terraform or Terragrunt subcommand to execute.'
     required: true

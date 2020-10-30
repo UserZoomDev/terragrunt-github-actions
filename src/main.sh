@@ -38,6 +38,13 @@ function parseInputs {
     exit 1
   fi
 
+  if [ "${INPUT_GITHUB_TOKEN}" != "" ]; then
+    github_token=${INPUT_GITHUB_TOKEN}
+  else
+    echo "Input GITHUB_TOKEN cannot be empty"
+    exit 1
+  fi
+
   # Optional inputs
   tfWorkingDir="."
   if [[ -n "${INPUT_TF_ACTIONS_WORKING_DIR}" ]]; then
@@ -139,7 +146,7 @@ function installTerragrunt {
 
   echo "Moving Terragrunt ${tgVersion} to PATH"
   chmod +x /tmp/terragrunt
-  mv /tmp/terragrunt /usr/local/bin/terragrunt 
+  mv /tmp/terragrunt /usr/local/bin/terragrunt
   if [ "${?}" -ne 0 ]; then
     echo "Failed to move Terragrunt ${tgVersion}"
     exit 1
@@ -164,6 +171,9 @@ function main {
   configureCLICredentials
   installTerraform
   cd ${GITHUB_WORKSPACE}/${tfWorkingDir}
+
+  # Stupid hack
+  git config --global url."https://foo:${github_token}@github.com/UserZoomDev".insteadOf "https://github.com/UserZoomDev"
 
   case "${tfSubcommand}" in
     fmt)
