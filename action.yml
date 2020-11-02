@@ -5,7 +5,7 @@ branding:
   icon: 'cloud'
   color: 'purple'
 inputs:
-  GITHUB_TOKEN:
+  private_repo_read_token:
     description: 'Token to use for HTTPS auth to private repos'
     required: true
   tf_actions_subcommand:

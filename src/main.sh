@@ -38,8 +38,8 @@ function parseInputs {
     exit 1
   fi
 
-  if [ "${INPUT_GITHUB_TOKEN}" != "" ]; then
-    github_token=${INPUT_GITHUB_TOKEN}
+  if [ "${INPUT_PRIVATE_REPO_READ_TOKEN}" != "" ]; then
+    private_repo_read_token=${INPUT_PRIVATE_REPO_READ_TOKEN}
   else
     echo "Input GITHUB_TOKEN cannot be empty"
     exit 1
@@ -173,7 +173,7 @@ function main {
   cd ${GITHUB_WORKSPACE}/${tfWorkingDir}
 
   # Stupid hack
-  git config --global url."https://foo:${github_token}@github.com/UserZoomDev".insteadOf "https://github.com/UserZoomDev"
+  git config --global url."https://foo:${private_repo_read_token}@github.com/UserZoomDev".insteadOf "https://github.com/UserZoomDev"
 
   case "${tfSubcommand}" in
     fmt)
