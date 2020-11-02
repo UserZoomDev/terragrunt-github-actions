@@ -7,15 +7,6 @@ function terragruntPlan {
   planExitCode=${?}
   planCommentStatus="Failed"
 
-  # Exit code of 2 indicates success with changes. Print the output, change the
-  # exit code to 0, and mark that the plan has changes.
-  if [ ${planExitCode} -eq 0 ]; then
-    planHasChanges=true
-    planCommentStatus="Success"
-    echo "plan: info: successfully planned Terragrunt configuration in ${tfWorkingDir}"
-    echo "${planOutput}"
-    echo
-
   # Exit code of !0 indicates failure.
   if [ ${planExitCode} -ne 0 ]; then
     echo "plan: error: failed to plan Terragrunt configuration in ${tfWorkingDir}"
