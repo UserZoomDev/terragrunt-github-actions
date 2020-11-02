@@ -3,7 +3,7 @@
 function terragruntApply() {
   # Gather the output of `terragrunt apply`.
   echo "apply: info: applying Terragrunt configuration in ${tfWorkingDir}"
-  applyOutput=$(${tfBinary} apply-all -auto-approve -input=false ${*} 2>&1)
+  applyOutput=$(${tfBinary} apply-all -auto-approve --terragrunt-non-interactive -input=false ${*} 2>&1)
   applyExitCode=${?}
   applyCommentStatus="Failed"
 
@@ -21,24 +21,4 @@ function terragruntApply() {
     echo "${applyOutput}"
     echo
   fi
-
-  applyCommentWrapper="#### \`${tfBinary} apply\` ${applyCommentStatus}
-<details><summary>Show Output</summary>
-
-\`\`\`
-${applyOutput}
-\`\`\`
-
-</details>
-
-*Workflow: \`${GITHUB_WORKFLOW}\`, Action: \`${GITHUB_ACTION}\`, Working Directory: \`${tfWorkingDir}\`, Workspace: \`${tfWorkspace}\`*"
-
-  applyCommentWrapper=$(stripColors "${applyCommentWrapper}")
-  echo "apply: info: creating JSON"
-  applyPayload=$(echo "${applyCommentWrapper}" | jq -R --slurp '{body: .}')
-  applyCommentsURL=$(cat ${GITHUB_EVENT_PATH} | jq -r .pull_request.comments_url)
-  echo "apply: info: commenting on the pull request"
-  echo "${applyPayload}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${applyCommentsURL}" >/dev/null
-
-  exit ${applyExitCode}
 }
