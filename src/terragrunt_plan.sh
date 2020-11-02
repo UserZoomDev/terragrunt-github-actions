@@ -41,7 +41,7 @@ function terragruntPlan {
     echo
   fi
 
-    planCommentWrapper="#### \`${tfBinary} plan\` ${planCommentStatus}
+  planCommentWrapper="#### \`${tfBinary} plan\` ${planCommentStatus}
   <details><summary>Show Output</summary>
 
   \`\`\`
