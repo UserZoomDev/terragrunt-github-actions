@@ -5,7 +5,7 @@ function terragruntPlan {
   echo "plan: info: planning Terragrunt configuration in ${tfWorkingDir}"
   planOutput=$(${tfBinary} plan-all -detailed-exitcode -input=false ${*} 2>&1)
   planExitCode=${?}
-  planHasChanges=false
+  planHasChanges=true
   planCommentStatus="Failed"
 
   # Exit code of 0 indicates success with no changes. Print the output and exit.
