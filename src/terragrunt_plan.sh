@@ -5,7 +5,6 @@ function terragruntPlan {
   echo "plan: info: planning Terragrunt configuration in ${tfWorkingDir}"
   planOutput=$(${tfBinary} plan-all -detailed-exitcode -input=false ${*} 2>&1)
   planExitCode=${?}
-  planHasChanges=true
   planCommentStatus="Failed"
 
   # Exit code of 0 indicates success with no changes. Print the output and exit.
@@ -42,6 +41,8 @@ function terragruntPlan {
     echo
   fi
 
+  planHasChanges=true
+  tfComment=true
   # Comment on the pull request if necessary.
   if [ "$GITHUB_EVENT_NAME" == "pull_request" ] && [ "${tfComment}" == "1" ] && ([ "${planHasChanges}" == "true" ] || [ "${planCommentStatus}" == "Failed" ]); then
     planCommentWrapper="#### \`${tfBinary} plan\` ${planCommentStatus}
